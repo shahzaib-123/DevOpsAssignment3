@@ -1,12 +1,10 @@
 FROM python:3.8
-
-WORKDIR /app/DevOpsAssignment3
-
+WORKDIR /app
 RUN apt-get update && \
     apt-get install -y git
 
 RUN git clone https://github.com/shahzaib-123/DevOpsAssignment3.git
-RUN cd /app/DevOpsAssignment3
+WORKDIR /app/DevOpsAssignment3.git
 RUN pip install --upgrade pip
 RUN pip install flask
 RUN pip install scikit-learn
