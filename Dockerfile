@@ -4,7 +4,7 @@ RUN apt-get update && \
     apt-get install -y git
 
 RUN git clone https://github.com/shahzaib-123/DevOpsAssignment3.git
-WORKDIR /app/DevOpsAssignment3.git
+WORKDIR /app/DevOpsAssignment3
 RUN pip install --upgrade pip
 RUN pip install flask
 RUN pip install scikit-learn
