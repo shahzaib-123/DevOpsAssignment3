@@ -12,7 +12,7 @@ db_config = {
 }
 
 app = Flask('__name__')
-model=pickle.load(open('/app/DevOpsAssignment3/model.pkl','rb'))
+model=pickle.load(open('model.pkl','rb'))
 
 @app.route('/')
 def home():

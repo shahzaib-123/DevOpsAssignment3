@@ -1,6 +1,6 @@
 FROM python:3.8
 
-WORKDIR /app
+WORKDIR /app/DevOpsAssignment3
 
 RUN apt-get update && \
     apt-get install -y git
@@ -19,4 +19,4 @@ EXPOSE 5000
 
 ENV NAME World
 
-CMD ["python3", "/app/DevOpsAssignment3/app.py"]
+CMD ["python3", "app.py"]
