@@ -12,7 +12,7 @@ db_config = {
 }
 
 app = Flask('__name__')
-model=pickle.load(open('model.pkl','rb'))
+model=pickle.load(open('/app/DevOpsAssignment3/model.pkl','rb'))
 
 @app.route('/')
 def home():
@@ -46,4 +46,4 @@ def predict():
     return render_template('index.html',prediction_text='Price of House will be Rs. {}'.format(int(prediction)))
 
 if(__name__=='__main__'):
-    app.run(debug=True)
+    app.run(host='0.0.0.0',port=5000,threaded=True)
