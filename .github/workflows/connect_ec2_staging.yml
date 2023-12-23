@@ -20,4 +20,4 @@ jobs:
           HOSTNAME: ${{ secrets.SSH_HOST_STAGING }}
           USER_NAME: ${{ secrets.USER_NAME }}
         run: |
-          cat "${PRIVATE_KEY}" 
+          echo "$PRIVATE_KEY" > private_key
