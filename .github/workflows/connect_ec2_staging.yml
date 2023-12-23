@@ -24,4 +24,5 @@ jobs:
           chmod 400 private_key
           ssh -i private_key ${USER_NAME}@${HOSTNAME} '
           bash trigger_service_up.sh
+          echo "DONE"
           echo "THE SERVER IS UP AT http://${HOSTNAME}"'
