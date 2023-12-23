@@ -1,4 +1,4 @@
-name: SSH Deploy
+name: EC2 Command Execution
 
 on:
   push:
@@ -7,24 +7,16 @@ on:
 
 jobs:
   deploy:
-    name: STAGINGGG
+    name: Deploy to EC2 STAGING
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set Up SSH
-      run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY_STAGING }}" > private_key
-        cat private_key
-        chmod 600 private_key
-        ssh-keyscan -t ed25519 -H ${{ secrets.HOSTNAME }} >> ~/.ssh/known_hosts
-
-    - name: SSH into AWS Instance
-      run: |
-        ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.USER_NAME }}@${{ secrets.HOSTNAME }} '
-          bash trigger_service_up.sh
-          echo "THE SERVER IS UP AT http://${{ secrets.HOSTNAME }}"'
-      env:
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+      - uses: actions/checkout@v2
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
+          HOSTNAME: ${{ secrets.SSH_HOST_STAGinG }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          sudo cat private_key
