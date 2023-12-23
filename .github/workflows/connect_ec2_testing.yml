@@ -1,24 +1,27 @@
 name: EC2 Command Execution
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-      
+
 jobs:
   deploy:
     name: Deploy to EC2 TESTING
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build & Deploy
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_TESTING }}
           HOSTNAME: ${{ secrets.SSH_HOST_TESTING }}
           USER_NAME: ${{ secrets.USER_NAME }}
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          echo "$PRIVATE_KEY" > private_key
+          chmod 600 private_key
           ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
-          bash trigger_service_up.sh
-          echo "THE SERVER IS UP AT http://${SSH_HOST_STAGING}"
+            bash trigger_service_up.sh
+            echo "THE SERVER IS UP AT http://${HOSTNAME}"'
