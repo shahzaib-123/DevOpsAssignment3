@@ -11,12 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Build & Deploy
         env:
           PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_STAGING }}
-          HOSTNAME: ${{ secrets.SSH_HOST_STAGinG }}
+          HOSTNAME: ${{ secrets.SSH_HOST_TESTING }}
           USER_NAME: ${{ secrets.USER_NAME }}
         run: |
-          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-          echo "this is: $USER_NAME"
+          echo "$PRIVATE_KEY" > private_key.pem
+          chmod 400 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
+            bash trigger_service_up.sh
+            echo "THE SERVER IS UP AT http://${HOSTNAME}"'
