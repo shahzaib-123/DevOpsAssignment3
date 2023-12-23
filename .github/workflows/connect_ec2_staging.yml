@@ -24,4 +24,5 @@ jobs:
           chmod 400 private_key.pem
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             bash trigger_service_up.sh
+            echo "DONE!"
             echo "THE SERVER IS UP AT http://${HOSTNAME}"'
