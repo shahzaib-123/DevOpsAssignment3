@@ -1,24 +1,24 @@
 name: EC2 Command Execution
 
 on:
-  pull_request:
+  push:
     branches:
       - main
-
+      
 jobs:
-  run-command:
+  deploy:
+    name: Deploy to EC2 TESTING
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Set up SSH
-      uses: appleboy/ssh-action@master
-      with:
-        private-key: ${{ secrets.EC2_SSH_PRIVATE_KEY_TESTING }}
-
-    - name: Run Command on EC2
-      run: |
-        EC2_IP=$(ssh -o StrictHostKeyChecking=no ubuntu@18.181.213.80 "bash -s" < ~/trigger_service_up.sh)
-        echo "You Can Access the Site at : http://18.181.213.80"
+      - uses: actions/checkout@v2
+      - name: Build & Deploy
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY_TESTING }}
+          HOSTNAME: ${{ secrets.SSH_HOST_TESTING }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+          bash trigger_service_up.sh
+          echo "THE SERVER IS UP AT http://${SSH_HOST_STAGING}"
